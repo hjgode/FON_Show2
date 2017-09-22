@@ -37,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.txtHex = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,7 +60,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(115, 361);
+            this.textBox2.Size = new System.Drawing.Size(244, 361);
             this.textBox2.TabIndex = 1;
             this.textBox2.WordWrap = false;
             // 
@@ -118,11 +119,23 @@
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 
+            // txtHex
+            // 
+            this.txtHex.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHex.Location = new System.Drawing.Point(11, 389);
+            this.txtHex.Multiline = true;
+            this.txtHex.Name = "txtHex";
+            this.txtHex.ReadOnly = true;
+            this.txtHex.Size = new System.Drawing.Size(875, 76);
+            this.txtHex.TabIndex = 9;
+            this.txtHex.WordWrap = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(771, 429);
+            this.ClientSize = new System.Drawing.Size(898, 501);
+            this.Controls.Add(this.txtHex);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -150,6 +163,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.TextBox txtHex;
     }
 }
 

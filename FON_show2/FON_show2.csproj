@@ -62,6 +62,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ggrid.cs" />
+    <Compile Include="HexText.cs" />
     <Compile Include="myBitmap.cs">
       <SubType>UserControl</SubType>
     </Compile>

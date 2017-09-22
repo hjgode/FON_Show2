@@ -1,0 +1,12 @@
+FileVersion=1.0
+Fontname short=CC020
+UserDate=04/26/06
+Fontname long='CP1250_H27_W10_M    '
+Font ID=0x63(c)
+code start=32
+code end=255
+Char width (bits)=10
+Char height (bytes)=27
+num bytes/row=2
+
+

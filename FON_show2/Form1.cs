@@ -12,10 +12,11 @@ namespace FON_show2
 {
     public partial class Form1 : Form
     {
-        myFont mFont = new myFont(@"D:\C-Source\Active\FON_show2\CC020 CP1250 v10.FON");
+        myFont mFont = new myFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
         public Form1()
         {
             InitializeComponent();
+            doUpdateFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
         }
         void start() {
             folderBrowserDialog1.SelectedPath = System.IO.Directory.GetCurrentDirectory();
@@ -34,7 +35,7 @@ namespace FON_show2
         }
         void doUpdateFont(string sFile)
         {
-            //myFont mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
+            //mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
             mFont = new myFont(sFile);
             textBox1.Text = mFont.dumpHeader();
             //System.Diagnostics.Debug.WriteLine( mFont.dumpHeader());
@@ -46,6 +47,15 @@ namespace FON_show2
             hScrollBar1.Maximum = mFont.codeEnd;
 
             hScrollBar1.Value = mFont.codeStart;
+
+            byte[] bTest = new byte[mFont.headerbytes.Length];
+            Array.Copy(mFont.headerbytes, bTest, mFont.headerbytes.Length);
+            //System.Diagnostics.Debug.WriteLine(Hex.Dump(bTest));
+            txtHex.Text = Hex.Dump(bTest);
+
+            hScrollBar1.Value = mFont.codeStart+1;
+            label1.Text = hScrollBar1.Value.ToString();
+            pictureBox1.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart);
         }
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {

@@ -1,0 +1,64 @@
+Fc107
+
+FileVersion=1.0
+Fontname short=FC107
+UserDate=03/25/97
+Fontname long='224 Chs Cd Pg 8859-1'
+Font ID=0x27(')
+code start=32
+code end=255
+Char width (bits)=19
+Char height (bytes)=26
+num bytes/row=3
+
+Offset(h)   00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+00000000    76 44 00 00 31 2E 30 21 46 43 31 30 37 27 00 13   vD..1.0!FC107'..
+00000010    00 1A 00 03 4E 00 20 FF 15 34 30 33 2F 32 35 2F   ....N. ?.403/25/
+00000020    39 37 32 32                                       9722
+
+File Name: FC107v20.fon
+5-Char : FC107
+1-Char : N:'(0x27) E:'(0x27) EI:'(0x27) P:'(0x27) PI:'(0x27)
+Version : 2.0
+State : 0x00 - 2.0
+Height : 26
+Widths : N:19(Fixed Width) E:19 EC:19 P:19 PC:19
+Underline: 21
+Baseline : 20
+Selftest : Show
+User Ver : 4
+User Date: 03/25/1997
+User Desc: 224 Chs Cd Pg 8859-1
+
+===============================================================================
+Fc12g
+
+FileVersion=1.0
+Fontname short=FC12G
+UserDate=03/24/97
+Fontname long='224 Chs Cd Pg 8859-1'
+Font ID=0x29())
+code start=32
+code end=255
+Char width (bits)=16
+Char height (bytes)=25
+num bytes/row=2
+
+Offset(h)   00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+00000000    F6 2B 00 00 31 2E 30 33 46 43 31 32 47 29 00 10   ?+..1.03FC12G)..
+00000010    00 19 00 02 32 00 20 FF 15 33 30 33 2F 32 34 2F   ....2. ?.303/24/
+00000020    39 37 32 32                                       9722
+
+File Name: FC12Gv20.fon
+5-Char : FC12G
+1-Char : N:)(0x29) E:)(0x29) EI:)(0x29) P:)(0x29) PI:)(0x29)
+Version : 2.0
+State : 0x00 - 2.0
+Height : 25
+Widths : N:16(Fixed Width) E:16 EC:16 P:16 PC:16
+Underline: 21
+Baseline : 19
+Selftest : Show
+User Ver : 3
+User Date: 03/24/1997
+User Desc: 224 Chs Cd Pg 8859-1

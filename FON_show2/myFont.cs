@@ -46,10 +46,17 @@ namespace FON_show2
 
         public String fontDisplay = "";
         public myBitmap.myBitmapAll allChars;
-
+        List<byte> myBytes;
+        List<byte> myHeaderBytes;
+        public byte[] headerbytes
+        {
+            get { return myHeaderBytes.ToArray(); }
+        }
         public myFont(string sFile)
         {
             _sFile = sFile;
+            myBytes = new List<byte>();
+            myHeaderBytes = new List<byte>();
             readHeader();
         }
         public void readHeader()
@@ -57,8 +64,14 @@ namespace FON_show2
             try
             {
                 FileStream streamReader;
-                streamReader = new FileStream(_sFile, FileMode.Open);
+                streamReader = new FileStream(_sFile, FileMode.Open,FileAccess.Read,FileShare.Read);
                 BinaryReader br = new BinaryReader(streamReader);
+                
+                //read header bytes
+                for(int c=0;c<36;c++)
+                    myHeaderBytes.Add (br.ReadByte());
+                br.BaseStream.Seek(0, SeekOrigin.Begin);
+
                 //start from 0
                 FileMarker = br.ReadBytes(4);
                 FileVersion = Encoding.ASCII.GetString(br.ReadBytes(3));
@@ -86,7 +99,7 @@ namespace FON_show2
                 //assume we have CharHeight lines for one char
                 StringBuilder sbFont = new StringBuilder();
 
-                List<byte> myBytes = new List<byte>();
+                    
                 //store all bitmap bytes
                 List<myBitmap.myBitmapChar> allCharBitmaps = new List<myBitmap.myBitmapChar>();
                 

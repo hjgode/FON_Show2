@@ -1,0 +1,11 @@
+FileVersion=1.0
+Fontname short=DG028
+UserDate=09/30/03
+Fontname long='Digits 0-9 $ . cents'
+Font ID=0xac(?)
+code start=31
+code end=57
+Char width (bits)=72
+Char height (bytes)=120
+num bytes/row=9
+

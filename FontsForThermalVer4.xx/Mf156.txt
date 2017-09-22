@@ -1,0 +1,11 @@
+FileVersion=1.0
+Fontname short=MF156
+UserDate=09/09/99
+Fontname long='224 CHAR ISO 8859-1 '
+Font ID=0x2a(*)
+code start=32
+code end=255
+Char width (bits)=13
+Char height (bytes)=27
+num bytes/row=2
+
