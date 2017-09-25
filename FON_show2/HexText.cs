@@ -63,9 +63,12 @@ namespace FON_show2
                 if (i + 1 < _bytesPerLine)
                 {
                     _sb.Append(" ");
+                    if (i==7)
+                        _sb.Append("   ");
                 }
             }
             _sb.AppendLine();
+            _sb.AppendLine(new string('-',_sb.ToString().Length));
         }
 
         private void WriteBody()
@@ -93,11 +96,15 @@ namespace FON_show2
                 if (_index % _bytesPerLine != 0 && _index < _length)
                 {
                     _sb.Append(" ");
+                    if(_index % 0x08==0)
+                        _sb.Append("   ");
                 }
             }
 
+            //last line rest
             if (_showAscii)
             {
+                _sb.Append("   ");
                 WriteAscii();                
             }
         }
@@ -127,6 +134,8 @@ namespace FON_show2
             for (int i = 0; i < length; i++)
             {
                 _sb.Append(Translate(_bytes[backtrack + i]));
+                if(i==7)
+                    _sb.Append("  ");
             }
         }
 

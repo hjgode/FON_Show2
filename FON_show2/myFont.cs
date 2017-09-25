@@ -22,13 +22,20 @@ namespace FON_show2
         
         */
 
-        public byte[] FileMarker=new byte[4]; //4 bytes                  // 00 00 00 00
+        public byte[] FileMarker=new byte[4]; //4 bytes                  // 00 00 00 00 | FF FF FF FF=fixed width
+                                                                         // 02 6A 00 00 = prop
+                                                                         // 7C 6A 00 00 = prop
+        // for prop fonts, first byte of byte array is width of character, for example
+        // 0x0A 
         public string FileVersion;//3 chars                              // 1.0
         public byte bReserved1;   //1 byte                               // 0x18, possibly baseline?
+
         public string FontNameShort;//5 chars                            // CC020
         public byte FontID;//1 byte                                      // c
         public byte bReserved1b;                                         // 00
         public byte CharWidth;                                           // 0A possibly the width = 10
+        // for prop fonts this is 0xff (255) and the width is stored in front of every byte block as two-byte (low first)
+
         public byte bReserved1c;                                         // 00
         public byte CharHeight;                                          // 1B possibly the height = 27 pixels
         public byte bReserved1d;                                         // 00 
@@ -68,41 +75,47 @@ namespace FON_show2
                 BinaryReader br = new BinaryReader(streamReader);
                 
                 //read header bytes
-                for(int c=0;c<36;c++)
+                for(int c=0;c<0x36;c++)
                     myHeaderBytes.Add (br.ReadByte());
                 br.BaseStream.Seek(0, SeekOrigin.Begin);
 
                 //start from 0
                 FileMarker = br.ReadBytes(4);
+                //offset 0x04
                 FileVersion = Encoding.ASCII.GetString(br.ReadBytes(3));
                 bReserved1 = br.ReadByte();
+                //offset 0x08
                 FontNameShort = Encoding.ASCII.GetString(br.ReadBytes(5));
-                FontID = br.ReadByte();
+                FontID = br.ReadByte();                                     //offset 0x0d
+
                 bReserved1b = br.ReadByte();
-                CharWidth = br.ReadByte();
+                CharWidth = br.ReadByte();                                  //offset 0x1F
+                
                 bReserved1c = br.ReadByte();
-                CharHeight = br.ReadByte();
+                CharHeight = br.ReadByte();                                 //offset 0x11
+                
                 bReserved1d = br.ReadByte();
-                numBytesPerRow = br.ReadByte();
+
+                numBytesPerRow = br.ReadByte();                             //offset 0x13
                 unknown1 = br.ReadByte();
+                
                 bReserved2 = br.ReadByte();
                 codeStart = br.ReadByte();
                 codeEnd = br.ReadByte();
+                
                 bReserved3 = br.ReadByte();
                 bReserved4 = br.ReadByte();
-                UserDate = Encoding.ASCII.GetString(br.ReadBytes(8)); 
-                byte[] buf = br.ReadBytes(20);
+                
+                UserDate = Encoding.ASCII.GetString(br.ReadBytes(8));       //offset 0x1A
+                byte[] buf = br.ReadBytes(20);                              //offset 0x22
                 FontNameLong = Encoding.ASCII.GetString(buf);
                 FontNameLong = FontNameLong.Replace('\0',' ');
-                //now we have 224 chars to read...
-                //assume each char consumes 2 bytes
+                //now we have 224 or so chars to read...
                 //assume we have CharHeight lines for one char
                 StringBuilder sbFont = new StringBuilder();
-
                     
                 //store all bitmap bytes
                 List<myBitmap.myBitmapChar> allCharBitmaps = new List<myBitmap.myBitmapChar>();
-                
 
                 for (int i = codeStart; i <= codeEnd; i++)
                 {
@@ -112,13 +125,16 @@ namespace FON_show2
                     System.Diagnostics.Debug.WriteLine("reading code point: " + i.ToString());
                     List<byte> bitmapRow = new List<byte>();
                     
+                    int thisCharWidth=this.CharWidth;
+                    if(thisCharWidth==0xFF){ //is proportional font?
+                        byte[] bcw = br.ReadBytes(2);
+                        thisCharWidth=bcw[1]*0xff + bcw[0]; //read char width
+                    }
                     //start a new char bitmap row
                     for (int y = 0; y < CharHeight; y++)
                     {
                         //System.Diagnostics.Debug.WriteLine("reading byte lines: " + y.ToString());
-                        //read two bytes
-                        //byte b1 = br.ReadByte();
-                        //byte b2 = br.ReadByte();
+                        //read num bytes per row
                         for (int iBytesPerRow = 0; iBytesPerRow < this.numBytesPerRow; iBytesPerRow++)
                         {
                             byte currByte = br.ReadByte();
@@ -127,6 +143,7 @@ namespace FON_show2
                             myBytes.Add(currByte);
                             sbFont.Append(Convert.ToString(currByte, 2).PadLeft(8, '0').Replace("0", " ").Replace("1", "█"));
                         }
+                        //add row to bitamp
                         myBitmap.myBitmapRow rowX = new myBitmap.myBitmapRow(bitmapRow.ToArray());
                         charBitmapRow.Add(rowX);
                         bitmapRow.Clear();
@@ -134,7 +151,8 @@ namespace FON_show2
                         sbFont.Append("\r\n");
                         //add one row of bytes to list of rows
                     }//iterate thru char rows
-                    myBitmap.myBitmapChar charX = new myBitmap.myBitmapChar(charBitmapRow.ToArray());
+                    //add bitmap matrix as char bitmap
+                    myBitmap.myBitmapChar charX = new myBitmap.myBitmapChar(charBitmapRow.ToArray(), thisCharWidth);
                     allCharBitmaps.Add(charX);
                     charBitmapRow.Clear();
                 }//iterate thru chars
@@ -160,7 +178,11 @@ namespace FON_show2
             sb.Append("Font ID=0x" + this.FontID.ToString("x02") + "(" + Encoding.ASCII.GetString(new byte[] { this.FontID }, 0, 1) + ")\r\n");
             sb.Append("code start=" + this.codeStart.ToString() + "\r\n");
             sb.Append("code end=" + this.codeEnd.ToString() + "\r\n");
-            sb.Append("Char width (bits)=" + this.CharWidth.ToString() + "\r\n");
+            sb.Append("Char width (bits)=" + this.CharWidth.ToString() + " ");
+            if (CharWidth == 0xFF)
+                sb.AppendLine("(prop.)");
+            else
+                sb.AppendLine("(fixed)");
             sb.Append("Char height (bytes)=" + this.CharHeight.ToString() + "\r\n");
             sb.Append("num bytes/row=" + this.numBytesPerRow.ToString() + "\r\n");
             System.Diagnostics.Debug.WriteLine(sb.ToString());

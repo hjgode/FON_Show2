@@ -22,8 +22,10 @@ namespace FON_show2
         public class myBitmapChar
         {
             public myBitmapRow[] _bitmapRows;
-            public myBitmapChar(myBitmapRow[] rows)
+            public int _charWidth = 0;
+            public myBitmapChar(myBitmapRow[] rows, int charWidth)
             {
+                _charWidth = charWidth;
                 _bitmapRows = rows;
             }
         }
@@ -56,10 +58,12 @@ namespace FON_show2
                 int blockW = bmp.Width / (byteWidth * 8);
                 int blockH = bmp.Height / rowCount;
 
+                System.Drawing.Pen myPen = new Pen(Color.Red);
                 System.Drawing.Brush myBrush = new System.Drawing.SolidBrush(Color.Black);
                 System.Drawing.Brush myBrushWhite = new System.Drawing.SolidBrush(Color.Gold);// Color.White);
                 //erase
                 g.FillRectangle(myBrushWhite, new Rectangle(new Point(0, 0), new Size(bmp.Width, bmp.Height)));
+                g.DrawLine(myPen, new Point(_bitmapChars[idx]._charWidth * factor, 0), new Point(_bitmapChars[idx]._charWidth * factor, bmp.Height));
                 for (int r = 0; r < rowCount; r++)
                 {
                     byte[] _b = _bitmapChars[idx]._bitmapRows[r]._bytesRow;

@@ -19,10 +19,14 @@ namespace FON_show2
             doUpdateFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
         }
         void start() {
-            folderBrowserDialog1.SelectedPath = System.IO.Directory.GetCurrentDirectory();
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.CheckFileExists = true; dlg.CheckPathExists = true;
+            dlg.RestoreDirectory = true;
+            dlg.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+            dlg.Multiselect = false;
+            if (dlg.ShowDialog() == DialogResult.OK)
             {
-                label2.Text = folderBrowserDialog1.SelectedPath;
+                label2.Text = System.IO.Path.GetDirectoryName(dlg.FileName);
                 listBox1.Items.Clear();
                 DirectoryInfo dinfo = new DirectoryInfo(label2.Text);
                 FileInfo[] Files = dinfo.GetFiles("*.*");
@@ -30,7 +34,7 @@ namespace FON_show2
                 {
                     listBox1.Items.Add(file.Name);
                 }
-
+                doUpdateFont(dlg.FileName);
             }
         }
         void doUpdateFont(string sFile)

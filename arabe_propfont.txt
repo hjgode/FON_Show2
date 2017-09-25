@@ -1,0 +1,21 @@
+File Name: ARABEv20.fon
+5-Char : ARABE
+1-Char : N:f(0x66) E:f(0x66) EI:f(0x66) P:f(0x66) PI:f(0x66)
+Version : 2.0
+State : 0x05 - 2.0
+Height : 30
+Widths : N:26(Proportional) E:26 EC:26 P:26 PC:26
+Underline: 22
+Baseline : 19
+Selftest : Show
+User Ver : 2
+User Date: 04/25/2001
+User Desc: 224 CH E-MAPD ARABIC
+
+Offset(h)   00 01 02 03 04 05 06 07    08 09 0A 0B 0C 0D 0E 0F
+----------------------------------------------------------------
+00000000    7C 6A 00 00 31 2E 30 5B    41 52 41 42 45 66 05 FF   |j..1.0[  ARABEf.?
+00000010    FF 1E 00 04 7A 00 20 FE    16 32 30 34 2F 32 35 2F   ?...z. ?  .204/25/
+00000020    30 31 32 32 34 20 43 48    20 45 2D 4D 41 50 44 20   01224 CH   E-MAPD 
+00000030    41 52 41 42 49 43                                    ARABIC
+

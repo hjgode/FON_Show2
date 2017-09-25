@@ -33,7 +33,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             this.label1 = new System.Windows.Forms.Label();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -45,7 +44,7 @@
             // 
             this.textBox1.AcceptsReturn = true;
             this.textBox1.AcceptsTab = true;
-            this.textBox1.Location = new System.Drawing.Point(370, 12);
+            this.textBox1.Location = new System.Drawing.Point(370, 32);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -55,7 +54,7 @@
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Courier New", 6F);
-            this.textBox2.Location = new System.Drawing.Point(642, 12);
+            this.textBox2.Location = new System.Drawing.Point(642, 32);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
@@ -66,7 +65,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(204, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(204, 32);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(160, 270);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -105,7 +104,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(80, 25);
             this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
+            this.button1.Text = "Select file";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -122,11 +121,11 @@
             // txtHex
             // 
             this.txtHex.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHex.Location = new System.Drawing.Point(11, 389);
+            this.txtHex.Location = new System.Drawing.Point(11, 399);
             this.txtHex.Multiline = true;
             this.txtHex.Name = "txtHex";
             this.txtHex.ReadOnly = true;
-            this.txtHex.Size = new System.Drawing.Size(875, 76);
+            this.txtHex.Size = new System.Drawing.Size(875, 112);
             this.txtHex.TabIndex = 9;
             this.txtHex.WordWrap = false;
             // 
@@ -134,7 +133,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(898, 501);
+            this.ClientSize = new System.Drawing.Size(898, 523);
             this.Controls.Add(this.txtHex);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button1);
@@ -159,7 +158,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.HScrollBar hScrollBar1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox listBox1;
