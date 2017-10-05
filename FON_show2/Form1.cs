@@ -41,6 +41,7 @@ namespace FON_show2
         {
             //mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
             mFont = new myFont(sFile);
+            
             textBox1.Text = mFont.dumpHeader();
             //System.Diagnostics.Debug.WriteLine( mFont.dumpHeader());
             textBox2.Text = mFont.fontDisplay;

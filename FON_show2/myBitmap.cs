@@ -95,6 +95,7 @@ namespace FON_show2
                 _allBytes = bytes;
                 _numBytesPerRow = numBytesPerRow;
                 _linesPerChar = linesPerChar;
+                _codeStart = codeStart;
             }
             public byte[] get(int codePoint)
             {

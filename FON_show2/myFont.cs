@@ -20,7 +20,7 @@ namespace FON_show2
         30 36 43 50 31 32 35 30  5F 48 32 37 5F 57 31 30     06CP1250 _H27_W10
         5F 4D                                                _M
         
-THE V1.3 HEADER:
+THE V1.0 HEADER:
 
     The 54 bytes (ALL bytes must be present) within the header are as follows:
 	4 BYTES			May be anything, rewritten internally
@@ -142,8 +142,26 @@ THE V2.0 HEADER:
             _sFile = sFile;
             myBytes = new List<byte>();
             myHeaderBytes = new List<byte>();
-            readHeader();
+            readFont();
+            //readHeader();
         }
+
+        Fontheader font = null;
+        void readFont()
+        {
+            try
+            {
+                FileStream streamReader;
+                streamReader = new FileStream(_sFile, FileMode.Open,FileAccess.Read,FileShare.Read);
+                font = new Fontheader(streamReader);
+                allChars = font.allChars;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Exception: " + ex.Message);
+            }
+        }
+
         public void readHeader()
         {
             try
@@ -252,6 +270,8 @@ THE V2.0 HEADER:
 
         public string dumpHeader()
         {
+            return font.dumpHeader();
+
             StringBuilder sb = new StringBuilder();
             sb.Append("FileVersion=" + this.FileVersion + "\r\n");
             sb.Append("Fontname short=" + this.FontNameShort + " (");
