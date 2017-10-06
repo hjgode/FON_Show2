@@ -151,9 +151,7 @@ THE V2.0 HEADER:
         {
             try
             {
-                FileStream streamReader;
-                streamReader = new FileStream(_sFile, FileMode.Open,FileAccess.Read,FileShare.Read);
-                font = new Fontheader(streamReader);
+                font = new Fontheader(_sFile);
                 allChars = font.allChars;
             }
             catch (Exception ex)

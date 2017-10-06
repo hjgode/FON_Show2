@@ -12,7 +12,8 @@ namespace FON_show2
 {
     public partial class Form1 : Form
     {
-        myFont mFont = new myFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
+        //myFont mFont = new myFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
+        Fontheader mFont = new Fontheader(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
         public Form1()
         {
             InitializeComponent();
@@ -39,9 +40,12 @@ namespace FON_show2
         }
         void doUpdateFont(string sFile)
         {
+            //myFont2 mFont2 = new myFont2(sFile);
+
             //mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
-            mFont = new myFont(sFile);
-            
+            //mFont = new myFont(sFile);
+            mFont = new Fontheader(sFile);
+
             textBox1.Text = mFont.dumpHeader();
             //System.Diagnostics.Debug.WriteLine( mFont.dumpHeader());
             textBox2.Text = mFont.fontDisplay;

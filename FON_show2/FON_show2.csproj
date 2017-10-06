@@ -71,6 +71,7 @@
       <DependentUpon>myBitmap.cs</DependentUpon>
     </Compile>
     <Compile Include="myFont.cs" />
+    <Compile Include="myFontHeader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="block.resx">

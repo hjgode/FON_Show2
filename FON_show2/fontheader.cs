@@ -37,19 +37,24 @@ namespace FON_show2
         public byte displayCode = 0;
         public byte underLineRow = 0;
 
+        public String fontDisplay = "";
         public myBitmap.myBitmapAll allChars;
+        List<byte> myHeaderBytes=new List<byte>();
+        public byte[] headerbytes
+        {
+            get { return myHeaderBytes.ToArray(); }
+        }
 
         public Fontheader(String fileName)
         {
             FileStream streamReader;
             streamReader = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            new Fontheader(streamReader);
-        }
-        public Fontheader(FileStream streamReader)
-        {
+
+            long pos = 0;
             List<byte> myBytes=new List<byte>();
 
             BinaryReader br = new BinaryReader(streamReader);
+
             br.BaseStream.Seek(0, SeekOrigin.Begin);
             //start from 0
             FileMarker = br.ReadBytes(4);
@@ -65,11 +70,17 @@ namespace FON_show2
             else if (FileVersion == "2.0")
                 fontVersion = FontVersion.Version20;
 
+            //read header bytes
+            pos = br.BaseStream.Position;
+            myHeaderBytes.AddRange(br.ReadBytes((int)fontVersion));
+            br.BaseStream.Seek(pos, SeekOrigin.Begin); //reset pos
+
             if (fontVersion == FontVersion.Version13 || fontVersion == FontVersion.Version20)
                 br.ReadByte(); //advance 1 byte for NUL terminator, except for Version 1.0 font
             if (fontVersion == FontVersion.Version20)
             {
-                headerSize = Convert.ToUInt32(br.ReadBytes(4)); //read 4 bytes of header size (normally 96), only with version 2.0 font
+                byte[] bHeaderSize = br.ReadBytes(4);
+                headerSize = (uint)(bHeaderSize[0]+0xff*bHeaderSize[1]+0xff00*bHeaderSize[2]+0xff0000*bHeaderSize[3]);// Convert.ToUInt32((bHeaderSize); //read 4 bytes of header size (normally 96), only with version 2.0 font
             }
 
             ModuloFontName = br.ReadByte();
@@ -141,7 +152,7 @@ namespace FON_show2
             // ############## end of header ######################
 
             //read all header bytes again
-            long pos = br.BaseStream.Position; //mark last position
+            pos = br.BaseStream.Position; //mark last position
             //read header bytes
             for (int c = 0; c < headerSize; c++)
                 myBytes.Add(br.ReadByte());
@@ -149,6 +160,9 @@ namespace FON_show2
 
             //store all bitmap bytes
             List<myBitmap.myBitmapChar> allCharBitmaps = new List<myBitmap.myBitmapChar>();
+            
+            //store the bitmap pixels in a string
+            StringBuilder sbFont = new StringBuilder();
 
             for (int i = codeStart; i <= codeEnd; i++)
             {
@@ -175,14 +189,18 @@ namespace FON_show2
                         //add current byte to list of bytes per row
                         bitmapRow.Add(currByte);
                         myBytes.Add(currByte);
+                        //add pixel to string representation
+                        sbFont.Append(Convert.ToString(currByte, 2).PadLeft(8, '0').Replace("0", " ").Replace("1", "█"));
                     }
                     //add row to bitamp
                     myBitmap.myBitmapRow rowX = new myBitmap.myBitmapRow(bitmapRow.ToArray());
                     charBitmapRow.Add(rowX);
                     bitmapRow.Clear();
-
+                    //start a new line in the string representation
+                    sbFont.Append("\r\n");
                     //add one row of bytes to list of rows
                 }//iterate thru char rows
+                fontDisplay = sbFont.ToString();
                 //add bitmap matrix as char bitmap
                 myBitmap.myBitmapChar charX = new myBitmap.myBitmapChar(charBitmapRow.ToArray(), thisCharWidth);
                 allCharBitmaps.Add(charX);
@@ -195,12 +213,15 @@ namespace FON_show2
 
         }
 
+        /// <summary>
+        /// the FontVersion, holds also header byte length
+        /// </summary>
         public enum FontVersion
         {
-            Unknown,
-            Version10,
-            Version13,
-            Version20
+            Unknown=0,
+            Version10=0x36,
+            Version13=71,
+            Version20=96
         }
         /// <summary>
         /// return uint16 for two bytes with LSB first
