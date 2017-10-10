@@ -49,20 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="block.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="block.Designer.cs">
-      <DependentUpon>block.cs</DependentUpon>
-    </Compile>
-    <Compile Include="fontheader.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="ggrid.cs" />
     <Compile Include="HexText.cs" />
     <Compile Include="myBitmap.cs">
       <SubType>UserControl</SubType>
@@ -70,13 +62,9 @@
     <Compile Include="myBitmap.Designer.cs">
       <DependentUpon>myBitmap.cs</DependentUpon>
     </Compile>
-    <Compile Include="myFont.cs" />
     <Compile Include="myFontHeader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="block.resx">
-      <DependentUpon>block.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

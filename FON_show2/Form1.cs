@@ -13,11 +13,13 @@ namespace FON_show2
     public partial class Form1 : Form
     {
         //myFont mFont = new myFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
-        Fontheader mFont = new Fontheader(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
+        //Fontheader mFont = new Fontheader(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
+        myFont2 mFont = new myFont2(@"D:\svn\git\FON_Show2\FontsForThermalVer7.xx\ASN-Bv20.fon");
         public Form1()
         {
             InitializeComponent();
-            doUpdateFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
+            //doUpdateFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
+            doUpdateFont(@"D:\svn\git\FON_Show2\FontsForThermalVer7.xx\ASN-Bv20.fon");
         }
         void start() {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -40,14 +42,14 @@ namespace FON_show2
         }
         void doUpdateFont(string sFile)
         {
-            //myFont2 mFont2 = new myFont2(sFile);
+            myFont2 mFont = new myFont2(sFile);
 
             //mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
             //mFont = new myFont(sFile);
-            mFont = new Fontheader(sFile);
+            //mFont = new Fontheader(sFile);
 
             textBox1.Text = mFont.dumpHeader();
-            //System.Diagnostics.Debug.WriteLine( mFont.dumpHeader());
+            System.Diagnostics.Debug.WriteLine( mFont.dumpHeader());
             textBox2.Text = mFont.fontDisplay;
 
             //block1.setByte(new byte[]{0x0c,0x00});
@@ -59,7 +61,7 @@ namespace FON_show2
 
             byte[] bTest = new byte[mFont.headerbytes.Length];
             Array.Copy(mFont.headerbytes, bTest, mFont.headerbytes.Length);
-            //System.Diagnostics.Debug.WriteLine(Hex.Dump(bTest));
+            System.Diagnostics.Debug.WriteLine(Hex.Dump(bTest));
             txtHex.Text = Hex.Dump(bTest);
 
             hScrollBar1.Value = mFont.codeStart+1;

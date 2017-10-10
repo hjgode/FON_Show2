@@ -257,8 +257,9 @@ THE V2.0 HEADER:
                 allChars = new myBitmap.myBitmapAll(allCharBitmaps.ToArray());
                 fontDisplay=sbFont.ToString();
                 myBitmap.myAllBitmaps allBitmaps = new myBitmap.myAllBitmaps(myBytes, numBytesPerRow, CharHeight, codeStart);
-                byte[] bTest = allBitmaps.get(33);
-                System.Drawing.Bitmap bmp = allChars.getBitmap(1);
+                int codePoint = codeStart;
+                byte[] bTest = allBitmaps.get(codePoint);
+                System.Drawing.Bitmap bmp = allChars.getBitmap(codePoint);
             }
             catch (Exception ex)
             {

@@ -18,11 +18,12 @@ namespace FON_show2
         public byte AllwaysZero { get; set; }
         public UInt16 CharWidth { get; set; }
         public UInt16 CharHeight { get; set; }
-        public byte numBytesPerRow { get; set; }
+        public UInt16 numBytesPerRow { get; set; }
         public UInt16 numBytesPerChar { get; set; }
         public byte codeStart { get; set; }
         public byte codeEnd { get; set; }
         public byte Reserved { get; set; }
+        public byte[] Reserved2 { get; set; }
         public byte UserVersionNumber { get; set; }
         public string UserDate { get; set; }
         public string FontNameLong { get; set; }
@@ -33,6 +34,8 @@ namespace FON_show2
         public String fontDisplay = "";
         public myBitmap.myBitmapAll allChars;
 
+        public byte[] headerbytes;
+
         public myFont2(string fileName)
         {
             FileStream streamReader;
@@ -41,8 +44,8 @@ namespace FON_show2
             BinaryReader br = new BinaryReader(streamReader);
             byte[] bytes = br.ReadBytes((int)myFontHeader.FontVersion.Version10); //read 54 bytes
             //get fileversion
-            myFontHeader fh = myFontHeader.getName("FileVersion", myFontHeader._fontHeaderEntries);
-            string fileversion = getString(bytes, (int)fh._offset, (int)fh._size);
+            myFontHeader _fontheader = myFontHeader.getName("FileVersion", myFontHeader._fontHeaderEntries);
+            string fileversion = getString(bytes, (int)_fontheader._offset, (int)_fontheader._size);
             if (fileversion == "1.0")
             {
                 fontVersion = myFontHeader.FontVersion.Version10;
@@ -60,6 +63,8 @@ namespace FON_show2
             }
             br.BaseStream.Seek(0, SeekOrigin.Begin);
             bytes = br.ReadBytes((int)fontVersion);
+            headerbytes = new byte[bytes.Length];
+            Array.Copy(bytes,headerbytes,bytes.Length);
             //now assign all properties
             foreach (myFontHeader FH in theFontHeader)
             {
@@ -67,6 +72,7 @@ namespace FON_show2
                 PropertyInfo property = this.GetType().GetProperty(FH._name);
                 var type = FH._type;
                 var size = FH._size;
+                var name = FH._name;
                 //
                 if(type==TypeCode.Byte){
                     if (size == 1)
@@ -83,7 +89,7 @@ namespace FON_show2
                     }
                 }
                 else if (type == TypeCode.String) { 
-                    String sValue = getString(bytes, (int)fh._offset, (int)fh._size);
+                    String sValue = getString(bytes, (int)FH._offset, (int)FH._size);
                     property.SetValue(this, sValue, null);
                     System.Diagnostics.Debug.WriteLine("Set " + property.Name + " to " + property.GetValue(this, null));
                 }
@@ -152,16 +158,55 @@ namespace FON_show2
             }//iterate thru chars
             allChars = new myBitmap.myBitmapAll(allCharBitmaps.ToArray());
             myBitmap.myAllBitmaps allBitmaps = new myBitmap.myAllBitmaps(myBytes, numBytesPerRow, CharHeight, codeStart);
-            byte[] bTest = allBitmaps.get(33);
+            //TEST ONLY
+            byte[] bTest = allBitmaps.get(codeStart);
             System.Drawing.Bitmap bmp = allChars.getBitmap(1);
 
         }
-
+        public string dumpHeader()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("FileVersion=" + this.FileVersion + "\r\n");
+            sb.Append("Fontname short=" + this.FontNameShort + " (");
+            if (ModuloFontName != getModuloForFontName(FontNameShort))
+                sb.AppendLine("Modulo does not match Fontname)");
+            else
+                sb.AppendLine("Modulo matches Fontname)");
+            sb.Append("UserDate=" + this.UserDate + "\r\n");
+            sb.Append("UserVersion=" + Encoding.ASCII.GetString(new byte[] { this.UserVersionNumber }) + "\r\n");
+            sb.Append("Fontname long='" + this.FontNameLong + "'\r\n");
+            sb.Append("Font ID=0x" + this.FontID.ToString("x02") + "(" + Encoding.ASCII.GetString(new byte[] { this.FontID }, 0, 1) + ")\r\n");
+            sb.Append("code start=" + this.codeStart.ToString() + "\r\n");
+            sb.Append("code end=" + this.codeEnd.ToString() + "\r\n");
+            sb.Append("Char width (bits)=" + this.CharWidth.ToString() + " ");
+            if (CharWidth == ProportionalMark)
+                sb.AppendLine("(prop.)");
+            else
+                sb.AppendLine("(fixed)");
+            sb.Append("Char height (bytes)=" + this.CharHeight.ToString() + "\r\n");
+            sb.Append("num bytes/row=" + this.numBytesPerRow.ToString() + "\r\n");
+            System.Diagnostics.Debug.WriteLine(sb.ToString());
+            return sb.ToString();
+        }
+        byte getModuloForFontName(string fontname)
+        {
+            if (fontname.Length != 5)
+                return 0x00;
+            uint bSum = 0;
+            byte[] bChars = Encoding.ASCII.GetBytes(fontname);
+            for (int i = 0; i < bChars.Length; i++)
+            {
+                bSum += bChars[i];
+            }
+            //use low part only
+            bSum = bSum & 0xFF;
+            return (byte)bSum;
+        }
         string getString(byte[] buf, int offset, int length)
         {
             string s = "";
             s = Encoding.ASCII.GetString(buf, offset, length);
-            s = s.Replace('\0', ' ');
+            s = s.Replace("\0", "");
             return s;
         }
         /// <summary>
@@ -271,17 +316,17 @@ namespace FON_show2
             new myFontHeader("CharWidth", 26, 2, TypeCode.UInt16),
             //24 to 30 for PICA, Elite, Italic
             new myFontHeader("CharHeight", 36, 2, TypeCode.UInt16),
-            new myFontHeader("numBytesPerRow", 38, 1, TypeCode.Byte),
+            new myFontHeader("numBytesPerRow", 38, 2, TypeCode.UInt16), //this two bytes with v 2.0
             new myFontHeader("numBytesPerChar", 40, 2, TypeCode.UInt16),
             new myFontHeader("codeStart", 42, 1, TypeCode.Byte),
             new myFontHeader("codeEnd", 43, 1, TypeCode.Byte),
-            new myFontHeader("Reserved", 44, 1, TypeCode.Byte), 
+            new myFontHeader("Reserved2", 44, 2, TypeCode.Byte), //undeline pos
             //underline is 44 to 45 = 2 bytes
             //baseline is 46 to 47 = 2 bytes
             new myFontHeader("UserVersionNumber", 48, 1, TypeCode.Byte),
             new myFontHeader("UserDate", 49, 11, TypeCode.String),
             new myFontHeader("FontNameLong", 60, 21, TypeCode.String),
-            //plus 15 bytes of 0xFF to fill 96 bytes
+            //plus 15 bytes of 0xFF to fill 96 bytes 81 to 96
         };
     }
 }

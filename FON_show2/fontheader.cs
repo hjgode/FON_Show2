@@ -208,7 +208,8 @@ namespace FON_show2
             }//iterate thru chars
             allChars = new myBitmap.myBitmapAll(allCharBitmaps.ToArray());
             myBitmap.myAllBitmaps allBitmaps = new myBitmap.myAllBitmaps(myBytes, numBytesPerRow, CharHeight, codeStart);
-            byte[] bTest = allBitmaps.get(33);
+            //just a test
+            byte[] bTest = allBitmaps.get(codeStart);
             System.Drawing.Bitmap bmp = allChars.getBitmap(1);
 
         }
