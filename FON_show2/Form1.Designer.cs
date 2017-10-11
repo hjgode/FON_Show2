@@ -37,7 +37,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.txtHex = new System.Windows.Forms.TextBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.hScrollBar2 = new System.Windows.Forms.HScrollBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -65,16 +68,16 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(204, 32);
+            this.pictureBox1.Location = new System.Drawing.Point(147, 78);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 270);
+            this.pictureBox1.Size = new System.Drawing.Size(160, 232);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
             // hScrollBar1
             // 
-            this.hScrollBar1.Location = new System.Drawing.Point(204, 285);
+            this.hScrollBar1.Location = new System.Drawing.Point(147, 50);
             this.hScrollBar1.Name = "hScrollBar1";
             this.hScrollBar1.Size = new System.Drawing.Size(160, 25);
             this.hScrollBar1.TabIndex = 4;
@@ -82,9 +85,9 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(204, 310);
+            this.label1.Location = new System.Drawing.Point(147, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(160, 21);
+            this.label1.Size = new System.Drawing.Size(157, 21);
             this.label1.TabIndex = 5;
             this.label1.Text = "label1";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -113,7 +116,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(11, 78);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(130, 186);
+            this.listBox1.Size = new System.Drawing.Size(130, 160);
             this.listBox1.TabIndex = 8;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
@@ -129,11 +132,33 @@
             this.txtHex.TabIndex = 9;
             this.txtHex.WordWrap = false;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(11, 281);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(130, 102);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
+            // 
+            // hScrollBar2
+            // 
+            this.hScrollBar2.Location = new System.Drawing.Point(10, 256);
+            this.hScrollBar2.Maximum = 20;
+            this.hScrollBar2.Minimum = 1;
+            this.hScrollBar2.Name = "hScrollBar2";
+            this.hScrollBar2.Size = new System.Drawing.Size(130, 22);
+            this.hScrollBar2.TabIndex = 11;
+            this.hScrollBar2.Value = 2;
+            this.hScrollBar2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar2_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(898, 523);
+            this.Controls.Add(this.hScrollBar2);
+            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.txtHex);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button1);
@@ -146,6 +171,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,6 +188,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox txtHex;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.HScrollBar hScrollBar2;
     }
 }
 

@@ -49,6 +49,41 @@ namespace FON_show2
                 return c;
             }
 
+            public Bitmap getBitmap(int idx, int zoomfactor)
+            {
+                //create a new bitmap with 
+                Bitmap bmp = new Bitmap(byteWidth * 8 * zoomfactor, rowCount * zoomfactor); //ie 160x270
+                Graphics g = Graphics.FromImage(bmp);
+                //how many blocks per row?
+                int blockW = bmp.Width / (byteWidth * 8);
+                int blockH = bmp.Height / rowCount;
+
+                System.Drawing.Pen myPen = new Pen(Color.Red);
+                System.Drawing.Brush myBrush = new System.Drawing.SolidBrush(Color.Black);
+                System.Drawing.Brush myBrushWhite = new System.Drawing.SolidBrush(Color.Gold);// Color.White);
+                //erase
+                g.FillRectangle(myBrushWhite, new Rectangle(new Point(0, 0), new Size(bmp.Width, bmp.Height)));
+                g.DrawLine(myPen, new Point(_bitmapChars[idx]._charWidth * zoomfactor, 0), new Point(_bitmapChars[idx]._charWidth * zoomfactor, bmp.Height));
+                for (int r = 0; r < rowCount; r++)
+                {
+                    byte[] _b = _bitmapChars[idx]._bitmapRows[r]._bytesRow;
+                    string sBin = "";
+                    for (int segment = 0; segment < _b.Length; segment++)
+                    {
+                        sBin = sBin + Convert.ToString(_b[segment], 2).PadLeft(8, '0');
+                    }
+                    for (int pos = 0; pos < 8 * _b.Length; pos++)
+                    {
+                        if (sBin.Substring(pos, 1) == "1") // ((_b & (1 << pos)) != 0)
+                            g.FillEllipse(myBrush, pos * blockW, r * blockH, blockW, blockH);
+                        else
+                            g.FillEllipse(myBrushWhite, pos * blockW, r * blockH, blockW, blockH);
+                    }
+                }
+
+                return bmp;
+            }
+
             public Bitmap getBitmap(int idx)
             {
                 //create a new bitmap with 
@@ -80,6 +115,7 @@ namespace FON_show2
                             g.FillEllipse(myBrushWhite, pos * blockW, r*blockH, blockW, blockH);
                     }
                 }
+                
                 return bmp;
             }
         }

@@ -34,7 +34,12 @@ namespace FON_show2
         public String fontDisplay = "";
         public myBitmap.myBitmapAll allChars;
 
-        public byte[] headerbytes;
+        public byte[] _headerbytes;
+        byte[] _bitmapbytes;
+        public byte[] bitmapbytes
+        {
+            get { return _bitmapbytes; }
+        }
 
         public myFont2(string fileName)
         {
@@ -63,8 +68,8 @@ namespace FON_show2
             }
             br.BaseStream.Seek(0, SeekOrigin.Begin);
             bytes = br.ReadBytes((int)fontVersion);
-            headerbytes = new byte[bytes.Length];
-            Array.Copy(bytes,headerbytes,bytes.Length);
+            _headerbytes = new byte[bytes.Length];
+            Array.Copy(bytes,_headerbytes,bytes.Length);
             //now assign all properties
             foreach (myFontHeader FH in theFontHeader)
             {
@@ -127,6 +132,7 @@ namespace FON_show2
                 { //is proportional font?
                     byte[] bcw = br.ReadBytes(2);
                     thisCharWidth = bcw[1] * 0xff + bcw[0]; //read char width
+                    myBytes.AddRange(bcw);
                 }
                 //start a new char bitmap row
                 for (int y = 0; y < CharHeight; y++)
@@ -156,12 +162,14 @@ namespace FON_show2
                 allCharBitmaps.Add(charX);
                 charBitmapRow.Clear();
             }//iterate thru chars
+            _bitmapbytes = myBytes.ToArray();
             allChars = new myBitmap.myBitmapAll(allCharBitmaps.ToArray());
             myBitmap.myAllBitmaps allBitmaps = new myBitmap.myAllBitmaps(myBytes, numBytesPerRow, CharHeight, codeStart);
             //TEST ONLY
             byte[] bTest = allBitmaps.get(codeStart);
             System.Drawing.Bitmap bmp = allChars.getBitmap(1);
-
+            System.Diagnostics.Debug.WriteLine("Total header bytes: " + _headerbytes.Length);
+            System.Diagnostics.Debug.WriteLine("Total bitmap bytes: " + _bitmapbytes.Length);
         }
         public string dumpHeader()
         {
@@ -185,6 +193,9 @@ namespace FON_show2
                 sb.AppendLine("(fixed)");
             sb.Append("Char height (bytes)=" + this.CharHeight.ToString() + "\r\n");
             sb.Append("num bytes/row=" + this.numBytesPerRow.ToString() + "\r\n");
+            sb.Append("Total header bytes: " + _headerbytes.Length.ToString() + "\r\n");
+            sb.Append("Total bitmap bytes: " + _bitmapbytes.Length.ToString() + "\r\n");
+            sb.Append("Total used bytes  : " + (_headerbytes.Length + _bitmapbytes.Length).ToString() + "\r\n");
             System.Diagnostics.Debug.WriteLine(sb.ToString());
             return sb.ToString();
         }
@@ -200,6 +211,8 @@ namespace FON_show2
             }
             //use low part only
             bSum = bSum & 0xFF;
+            System.Diagnostics.Debug.WriteLine("FontName: " + fontname + ", Modulo=" + bSum.ToString()+" (0x"+bSum.ToString("x02")+" )");
+            // FontName: PE203, Modulo=42 (0x2a )
             return (byte)bSum;
         }
         string getString(byte[] buf, int offset, int length)

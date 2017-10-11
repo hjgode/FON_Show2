@@ -12,8 +12,6 @@ namespace FON_show2
 {
     public partial class Form1 : Form
     {
-        //myFont mFont = new myFont(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
-        //Fontheader mFont = new Fontheader(@"D:\svn\git\FON_Show2\FontsForThermalVer4.xx\CC020 CP1250 v10.FON");
         myFont2 mFont = new myFont2(@"D:\svn\git\FON_Show2\FontsForThermalVer7.xx\ASN-Bv20.fon");
         public Form1()
         {
@@ -42,7 +40,7 @@ namespace FON_show2
         }
         void doUpdateFont(string sFile)
         {
-            myFont2 mFont = new myFont2(sFile);
+            mFont = new myFont2(sFile);
 
             //mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
             //mFont = new myFont(sFile);
@@ -59,19 +57,24 @@ namespace FON_show2
 
             hScrollBar1.Value = mFont.codeStart;
 
-            byte[] bTest = new byte[mFont.headerbytes.Length];
-            Array.Copy(mFont.headerbytes, bTest, mFont.headerbytes.Length);
+            byte[] bTest = new byte[mFont._headerbytes.Length];
+            Array.Copy(mFont._headerbytes, bTest, mFont._headerbytes.Length);
             System.Diagnostics.Debug.WriteLine(Hex.Dump(bTest));
             txtHex.Text = Hex.Dump(bTest);
 
+            //resize pict box (was 160x230)
+            pictureBox1.Size = new Size(mFont.numBytesPerRow*8 * 10, mFont.CharHeight * 10 + 80);
             hScrollBar1.Value = mFont.codeStart+1;
             label1.Text = hScrollBar1.Value.ToString();
             pictureBox1.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart);
+            pictureBox2.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart, 4);
         }
+
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             label1.Text = hScrollBar1.Value.ToString();
             pictureBox1.Image = mFont.allChars.getBitmap(hScrollBar1.Value-mFont.codeStart);
+            pictureBox2.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart, 4);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -88,6 +91,11 @@ namespace FON_show2
         {
             string s = label2.Text +"\\"+ listBox1.SelectedItem.ToString();
             doUpdateFont(s);
+        }
+
+        private void hScrollBar2_Scroll(object sender, ScrollEventArgs e)
+        {
+            pictureBox2.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart, hScrollBar2.Value);
         }
     }
 }
