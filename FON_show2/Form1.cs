@@ -40,34 +40,41 @@ namespace FON_show2
         }
         void doUpdateFont(string sFile)
         {
-            mFont = new myFont2(sFile);
+            try
+            {
+                mFont = new myFont2(sFile);
 
-            //mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
-            //mFont = new myFont(sFile);
-            //mFont = new Fontheader(sFile);
+                //mFont = new myFont(@"D:\tmp\font\FontsForThermalVer4.xx\Mf025.fon");
+                //mFont = new myFont(sFile);
+                //mFont = new Fontheader(sFile);
 
-            textBox1.Text = mFont.dumpHeader();
-            System.Diagnostics.Debug.WriteLine( mFont.dumpHeader());
-            textBox2.Text = mFont.fontDisplay;
+                textBox1.Text = mFont.dumpHeader();
+                System.Diagnostics.Debug.WriteLine(mFont.dumpHeader());
+                textBox2.Text = mFont.fontDisplay;
 
-            //block1.setByte(new byte[]{0x0c,0x00});
+                //block1.setByte(new byte[]{0x0c,0x00});
 
-            hScrollBar1.Minimum = mFont.codeStart;
-            hScrollBar1.Maximum = mFont.codeEnd;
+                hScrollBar1.Minimum = mFont.codeStart;
+                hScrollBar1.Maximum = mFont.codeEnd;
 
-            hScrollBar1.Value = mFont.codeStart;
+                hScrollBar1.Value = mFont.codeStart;
 
-            byte[] bTest = new byte[mFont._headerbytes.Length];
-            Array.Copy(mFont._headerbytes, bTest, mFont._headerbytes.Length);
-            System.Diagnostics.Debug.WriteLine(Hex.Dump(bTest));
-            txtHex.Text = Hex.Dump(bTest);
+                byte[] bTest = new byte[mFont._headerbytes.Length];
+                Array.Copy(mFont._headerbytes, bTest, mFont._headerbytes.Length);
+                System.Diagnostics.Debug.WriteLine(Hex.Dump(bTest));
+                txtHex.Text = Hex.Dump(bTest);
 
-            //resize pict box (was 160x230)
-            pictureBox1.Size = new Size(mFont.numBytesPerRow*8 * 10, mFont.CharHeight * 10 + 80);
-            hScrollBar1.Value = mFont.codeStart+1;
-            label1.Text = hScrollBar1.Value.ToString();
-            pictureBox1.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart);
-            pictureBox2.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart, 4);
+                //resize pict box (was 160x230)
+                pictureBox1.Size = new Size(mFont.numBytesPerRow * 8 * 10, mFont.CharHeight * 10 + 80);
+                hScrollBar1.Value = mFont.codeStart + 1;
+                label1.Text = hScrollBar1.Value.ToString();
+                pictureBox1.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart);
+                pictureBox2.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart, 4);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -96,6 +103,21 @@ namespace FON_show2
         private void hScrollBar2_Scroll(object sender, ScrollEventArgs e)
         {
             pictureBox2.Image = mFont.allChars.getBitmap(hScrollBar1.Value - mFont.codeStart, hScrollBar2.Value);
+        }
+
+        private void bt_splitROM_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.CheckFileExists = true; dlg.CheckPathExists = true;
+            dlg.RestoreDirectory = true;
+            dlg.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+            dlg.Multiselect = false;
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                firmware2files fw = new firmware2files(dlg.FileName);
+                DirectoryInfo di = new DirectoryInfo(System.IO.Path.GetDirectoryName(dlg.FileName));
+                fw.split(di);
+            }
         }
     }
 }

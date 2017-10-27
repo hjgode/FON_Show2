@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtractROMfonts.cs" />
+    <Compile Include="firmware2files.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

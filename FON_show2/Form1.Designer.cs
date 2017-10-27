@@ -39,6 +39,7 @@
             this.txtHex = new System.Windows.Forms.TextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.hScrollBar2 = new System.Windows.Forms.HScrollBar();
+            this.bt_splitROM = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -152,11 +153,22 @@
             this.hScrollBar2.Value = 2;
             this.hScrollBar2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar2_Scroll);
             // 
+            // bt_splitROM
+            // 
+            this.bt_splitROM.Location = new System.Drawing.Point(513, 333);
+            this.bt_splitROM.Name = "bt_splitROM";
+            this.bt_splitROM.Size = new System.Drawing.Size(102, 32);
+            this.bt_splitROM.TabIndex = 12;
+            this.bt_splitROM.Text = "split ROM";
+            this.bt_splitROM.UseVisualStyleBackColor = true;
+            this.bt_splitROM.Click += new System.EventHandler(this.bt_splitROM_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(898, 523);
+            this.Controls.Add(this.bt_splitROM);
             this.Controls.Add(this.hScrollBar2);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.txtHex);
@@ -190,6 +202,7 @@
         private System.Windows.Forms.TextBox txtHex;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.HScrollBar hScrollBar2;
+        private System.Windows.Forms.Button bt_splitROM;
     }
 }
 
